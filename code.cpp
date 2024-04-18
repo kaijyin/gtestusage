@@ -1,74 +1,200 @@
+/**
+ * @file dijkstra.cpp
+ * @author kaijintin@gmail.com
+ * @brief This file contains the
+ * implementation of Dijkstra's
+ * algorithm.
+ *
+ * This implementation is based on the
+ * code provided in the lecture slides.
+ *
+ * @version 0.1
+ * @date 2022-03-10
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
+
 #include <algorithm>
+#include <climits>
 #include <iostream>
-#include <limits.h>
 #include <queue>
 #include <utility>
 
-const int MAX_N = 1005;
-int dis[MAX_N][MAX_N];
-std::pair<int, int> path[MAX_N][MAX_N];
-int dir[8][2] = {{0, -1}, {0, 1},   {1, 0},  {-1, 0},
+/**
+ * @brief A constant that represents the
+ * maximum number of rows and columns in
+ * the grid.
+ *
+ */
+const int KMaxN = 1005;
+
+/**
+ * @brief A two-dimensional array that
+ * stores the distances between each
+ * node in the grid.
+ *
+ */
+int Dis[KMaxN][KMaxN];
+
+/**
+ * @brief A two-dimensional array that
+ * stores the previous node in the
+ * shortest path from the source node to
+ * each node.
+ *
+ */
+std::pair<int, int> Path[KMaxN][KMaxN];
+
+/**
+ * @brief An array of direction vectors
+ * that represent the possible
+ * neighboring nodes of a given node.
+ *
+ */
+int Dir[8][2] = {{0, -1}, {0, 1},   {1, 0},  {-1, 0},
                  {1, 1},  {-1, -1}, {1, -1}, {-1, 1}};
-bool vis[MAX_N][MAX_N];
+
+/**
+ * @brief A two-dimensional array that
+ * stores whether a given node has been
+ * visited or not.
+ *
+ */
+bool Vis[KMaxN][KMaxN];
+
+/**
+ * @brief A structure that represents a
+ * node in the grid, including its
+ * distance from the source node and its
+ * position in the grid.
+ *
+ */
 struct Node {
-  int distance;
-  int pos_x, pos_y;
-  bool operator<(const Node &other) const {
-    //优先队列默认为最大堆，无需反转条件。
-    return distance > other.distance;
-  }
-};
-int graph[MAX_N][MAX_N];
-void Djkstra(int totoal_rows, int total_cols) {
-  for (int i = 0; i < totoal_rows; i++) {
-    for (int j = 0; j < total_cols; j++) {
-      dis[i][j] = INT_MIN / 2; //初始化，取最小值
-      vis[i][j] = false;
+    int Distance;
+    int PosX, PosY;
+
+    /**
+     * @brief A comparison operator that
+     * defines the priority of a node in a
+     * priority queue.
+     *
+     * Nodes with higher distances have
+     * higher priority.
+     *
+     */
+    bool operator<(const Node &Other) const {
+        return Distance > Other.Distance;
     }
-  }
-  std::priority_queue<Node> queue;
-  queue.push({0, 0, 0});
-  dis[0][0] = 0;
-  while (!queue.empty()) {
-    int row_position = queue.top().pos_x; //选出一个当前最优解
-    int column_position = queue.top().pos_y;
-    queue.pop();
-    if (vis[row_position][column_position])
-      continue;
-    vis[row_position][column_position] = true;
-    if (row_position == totoal_rows - 1 &&
-        column_position == total_cols - 1) { //走到终点，直接返回
-      return;
+} __attribute__((aligned(16)));
+
+/**
+ * @brief A two-dimensional array that
+ * stores the edge weights between each
+ * pair of nodes.
+ *
+ */
+int Graph[KMaxN][KMaxN];
+
+/**
+ * @brief The main function of
+ * Dijkstra's algorithm.
+ *
+ * This function takes the total number
+ * of rows and columns in the grid as
+ * input, and computes the shortest path
+ * from the source node to each node in
+ * the grid.
+ *
+ * @param total_rows The total number of
+ * rows in the grid.
+ * @param total_cols The total number of
+ * columns in the grid.
+ *
+ */
+void dijkstra(int M, int TotalCols) {
+    for (int I = 0; I < M; I++) {
+        for (int J = 0; J < TotalCols; J++) {
+            Dis[I][J] = INT_MIN / 2;  // Initialize, take
+                                      // minimum value
+            Vis[I][J] = false;
+        }
     }
-    for (int i = 0; i < 8; i++) {
-      int tmp_row_position = row_position + dir[i][0];
-      int tmp_column_position = column_position + dir[i][1];
-      if (tmp_row_position < 0 || tmp_row_position >= totoal_rows ||
-          tmp_column_position < 0 || tmp_column_position >= total_cols ||
-          vis[tmp_row_position][tmp_column_position]) {
-        continue;
-      }
-      if (dis[row_position][column_position] +
-              graph[tmp_row_position][tmp_column_position] >
-          dis[tmp_row_position][tmp_column_position]) { //选择权值最大的路径
-        dis[tmp_row_position][tmp_column_position] =
-            dis[row_position][column_position] +
-            graph[row_position][column_position];
-        path[tmp_row_position][tmp_column_position].first =
-            row_position; //更新到当前点的path
-        path[tmp_row_position][tmp_column_position].second = column_position;
-        queue.push({dis[tmp_row_position][tmp_column_position],
-                    tmp_row_position, tmp_column_position});
-      }
+
+    std::priority_queue<Node> Queue;
+    Queue.push({0, 0, 0});
+    Dis[0][0] = 0;
+
+    while (!Queue.empty()) {
+        int RowPosition = Queue.top().PosX;  // Select an
+                                             // optimal node
+        int ColumnPosition = Queue.top().PosY;
+        Queue.pop();
+
+        if (Vis[RowPosition][ColumnPosition]) {
+            continue;
+        }
+        int now                          = 1;
+        Vis[RowPosition][ColumnPosition] = true;
+
+        if (RowPosition == M - 1 &&
+            ColumnPosition == TotalCols - 1) {  // Reach the
+                                                // destination
+                                                // node,
+                                                // return
+                                                // directly
+            return;
+        }
+
+        for (auto &I : Dir) {
+            int TmpRowPosition    = RowPosition + I[0];
+            int TmpColumnPosition = ColumnPosition + I[1];
+
+            if (TmpRowPosition < 0 || TmpRowPosition >= M ||
+                TmpColumnPosition < 0 || TmpColumnPosition >= TotalCols ||
+                Vis[TmpRowPosition][TmpColumnPosition]) {
+                continue;
+            }
+
+            if (Dis[RowPosition][ColumnPosition] +
+                    Graph[TmpRowPosition][TmpColumnPosition] >
+                Dis[TmpRowPosition][TmpColumnPosition]) {
+                Dis[TmpRowPosition][TmpColumnPosition] =
+                    Dis[RowPosition][ColumnPosition] +
+                    Graph[RowPosition][ColumnPosition];
+                Path[TmpRowPosition][TmpColumnPosition].first  = RowPosition;
+                Path[TmpRowPosition][TmpColumnPosition].second = ColumnPosition;
+                Queue.push({Dis[TmpRowPosition][TmpColumnPosition],
+                            TmpRowPosition, TmpColumnPosition});
+            }
+        }
     }
-  }
 }
-void printPath(int row_number, int col_number) { //递归打印path
-  if (row_number == 0 && col_number == 0) {
-    std::cout << row_number << " " << col_number << std::endl;
-    return;
-  }
-  printPath(path[row_number][col_number].first,
-            path[row_number][col_number].second);
-  std::cout << row_number << " " << col_number << std::endl;
+
+/**
+ * @brief A recursive function that
+ * prints the shortest path from the
+ * source node to a given node.
+ *
+ * This function takes the row and
+ * column indices of the destination
+ * node as input, and prints the path
+ * from the source node to the
+ * destination node.
+ *
+ * @param row_number The row index of
+ * the destination node.
+ * @param col_number The column index of
+ * the destination node.
+ *
+ */
+void printPath(int RowNumber, int ColNumber) {
+    if (RowNumber == 0 && ColNumber == 0) {
+        std::cout << RowNumber << " " << ColNumber << std::endl;
+        return;
+    }
+
+    printPath(Path[RowNumber][ColNumber].first,
+              Path[RowNumber][ColNumber].second);
+    std::cout << RowNumber << " " << ColNumber << std::endl;
 }
