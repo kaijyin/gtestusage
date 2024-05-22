@@ -33,11 +33,11 @@
     "C_Cpp.formatting": "clangFormat", //采用clang-format格式化cpp文件
     "C_Cpp.clang_format_style": "Google", //选择clang-format为Google风格
     "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true, //clang-tidy使用build路径来查找compile_commands.json文件
-    "C_Cpp.default.cppStandard": "c++17", //设置为C++17标准,不然clangd无法对C++17特性的提示
-    "C_Cpp.default.compilerPath": "/usr/bin/clang++", //设置clang++为默认编译器
+    // "C_Cpp.default.cppStandard": "c++17", //设置为C++17标准,不然clangd无法对C++17特性的提示
+    // "C_Cpp.default.compilerPath": "/usr/bin/clang++", //设置clang++为默认编译器
     "C_Cpp.intelliSenseEngine": "disabled", //关闭c/c++插件的智能提示，使用clangd
     "C_Cpp.codeAnalysis.clangTidy.enabled": true, //开启clang-tidy检查
-    "C_Cpp.codeAnalysis.clangTidy.path": "/usr/bin/clang-tidy",
+    // "C_Cpp.codeAnalysis.clangTidy.path": "/usr/bin/clang-tidy",
     // CMakefile配置
     "cmake.configureOnOpen": true, //打开项目时自动执行 cmake . -B build
     "[cmake]": {
@@ -52,7 +52,7 @@
         // 同时开启的任务数量
         "-j=8",
         // 告诉clangd用那个clang进行编译，路径参考which clang++的路径
-        "--query-driver=/usr/bin/clang++",
+        // "--query-driver=/usr/bin/clang++",
         // clang-tidy功能
         "--clang-tidy",
         "--clang-tidy-checks=performance-*,bugprone-*",
@@ -71,12 +71,12 @@
     "git.autofetch": true, //每隔120s自动拉取远程仓库的更新，不用再总是手动git fetch
     "git.autofetchPeriod": 120,
     //go项目配置
-    "[go]": {
-        "editor.defaultFormatter": "golang.go", //使用golang.go插件格式化go文件
-    },
-    "go.lintTool": "golangci-lint",
-    "go.lintOnSave": "file", //保存时自动检查文件代码风格
-    "go.toolsManagement.autoUpdate": true, //vscode定期自动更新go工具为最新版本,如gopls,golangci-lint等
+    // "[go]": {
+    // "editor.defaultFormatter": "golang.go", //使用golang.go插件格式化go文件
+    // },
+    // "go.lintTool": "golangci-lint",
+    // "go.lintOnSave": "file", //保存时自动检查文件代码风格
+    // "go.toolsManagement.autoUpdate": true, //vscode定期自动更新go工具为最新版本,如gopls,golangci-lint等
     // python配置
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
@@ -351,19 +351,19 @@
     "tabnine.receiveBetaChannelUpdates": true, //自动更新最新版本的tabnine
     "tabnine.experimentalAutoImports": true, //自动导入头文件和包
     //copilot插件配置
-    "github.copilot.chat.localeOverride": "zh-CN", //设置copilot的语言为中文
-    "remote.extensionKind": {
-        "GitHub.copilot": [
-            "ui"
-        ],
-        "github.copilot-chat": [
-            "ui"
-        ]
-    },
+    // "github.copilot.chat.localeOverride": "zh-CN", //设置copilot的语言为中文
+    // "remote.extensionKind": {
+    // "GitHub.copilot": [
+    // "ui"
+    // ],
+    // "github.copilot-chat": [
+    // "ui"
+    // ]
+    // },
     // 力扣插件配置
-    "leetcode.endpoint": "leetcode-cn", //选择力扣国内站点
-    "leetcode.hint.configWebviewMarkdown": false,
-    "leetcode.workspaceFolder": "/home/yin/.leetcode",
-    "leetcode.hint.commentDescription": false,
-    "leetcode.defaultLanguage": "cpp",
+    // "leetcode.endpoint": "leetcode-cn", //选择力扣国内站点
+    // "leetcode.hint.configWebviewMarkdown": false,
+    // "leetcode.workspaceFolder": "/home/yin/.leetcode",
+    // "leetcode.hint.commentDescription": false,
+    // "leetcode.defaultLanguage": "cpp",
 }
