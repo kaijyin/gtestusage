@@ -1,0 +1,369 @@
+{
+    //vscode基本配置
+    "editor.formatOnSave": true, //保存时自动格式化
+    "editor.formatOnPaste": true, //格式化粘贴的代码
+    "editor.formatOnType": true, //按下回车键时自动格式化行代码
+    "editor.fontFamily": "Fira Code", //选择微软字体,更顺滑
+    // "editor.fontLigatures": true, // != => === 等符号更美观？用一段时间才知道
+    "editor.detectIndentation": false, //关闭自动检测缩进，始终使用用户定义的缩进设置
+    "editor.renderWhitespace": "all", //显示空格和tab，帮助统一排版
+    "editor.quickSuggestionsDelay": 0, //输入时立即获得代码补全提示
+    "editor.largeFileOptimizations": false, //关闭大文件优化,仍然语法高亮，但是性能更差
+    "editor.unicodeHighlight.ambiguousCharacters": false, //关闭unicode字符特殊高亮,避免干扰。如拉丁字母a和西里尔字母а
+    "editor.suggest.snippetsPreventQuickSuggestions": false, //更多的代码提示，设为true则提示更少
+    "files.autoSave": "afterDelay", //打开的文件每过1s自动保存
+    "files.autoSaveDelay": 1000,
+    "files.trimTrailingWhitespace": true, //保存文件时删除所有行尾空格和制表符，使代码整洁
+    "files.eol": "\n", //采用linux换行符
+    "terminal.integrated.enableMultiLinePasteWarning": "never", //关闭集成终端粘贴多行命令的警告
+    "terminal.integrated.defaultProfile.linux": "tmux", //设置集成终端默认为tmux
+    "workbench.editor.showTabs": "multiple", //显示上方的标签，只是用来方便查看和跳转。不要用鼠标去关闭!
+    "workbench.colorTheme": "One Dark Pro Darker", //最好看的代码主题!
+    "workbench.iconTheme": "material-icon-theme", //清晰好看的图标主题
+    "explorer.confirmDelete": false, //删除文件时不再出现警告提示
+    "security.workspace.trust.untrustedFiles": "open", //允许打开不受信任的文件(打开文件不再询问)
+    // "problems.showCurrentInStatus": true, //在状态栏显示当前文件的问题数
+    //C++项目配置
+    "[cpp]": {
+        "editor.wordBasedSuggestions": "off",
+        "editor.suggest.insertMode": "replace",
+        "editor.semanticHighlighting.enabled": true, //基于代码语义的高亮
+        "editor.defaultFormatter": "xaver.clang-format" //采用xaver的clang-format插件
+    },
+    "C_Cpp.formatting": "clangFormat", //采用clang-format格式化cpp文件
+    "C_Cpp.clang_format_style": "Google", //选择clang-format为Google风格
+    "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true, //clang-tidy使用build路径来查找compile_commands.json文件
+    "C_Cpp.default.cppStandard": "c++17", //设置为C++17标准,不然clangd无法对C++17特性的提示
+    "C_Cpp.default.compilerPath": "/usr/bin/clang++", //设置clang++为默认编译器
+    "C_Cpp.intelliSenseEngine": "disabled", //关闭c/c++插件的智能提示，使用clangd
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true, //开启clang-tidy检查
+    "C_Cpp.codeAnalysis.clangTidy.path": "/usr/bin/clang-tidy",
+    // CMakefile配置
+    "cmake.configureOnOpen": true, //打开项目时自动执行 cmake . -B build
+    "[cmake]": {
+        "editor.defaultFormatter": "cheshirekow.cmake-format" //设置cmake-format插件格式化cmake文件
+    },
+    // clangd配置
+    "clangd.arguments": [
+        // 在后台自动分析文件（基于complie_commands)
+        "--background-index",
+        // 标记compelie_commands.json文件的目录位置
+        "--compile-commands-dir=${workspaceFolder}/build", -
+        // 同时开启的任务数量
+        "-j=8",
+        // 告诉clangd用那个clang进行编译，路径参考which clang++的路径
+        "--query-driver=/usr/bin/clang++",
+        // clang-tidy功能
+        "--clang-tidy",
+        "--clang-tidy-checks=performance-*,bugprone-*",
+        // 全局补全（会自动补充头文件）
+        "--all-scopes-completion",
+        // 更详细的补全内容
+        "--completion-style=detailed",
+        // 补充头文件的形式
+        "--header-insertion=iwyu",
+        // pch优化的位置
+        "--pch-storage=disk",
+    ],
+    //git配置
+    "git.suggestSmartCommit": false, //关闭智能提交msg建议
+    "git.openRepositoryInParentFolders": "never", //即使父节点含有git,也绝不用父节点的git来管理，避免误操作
+    "git.autofetch": true, //每隔120s自动拉取远程仓库的更新，不用再总是手动git fetch
+    "git.autofetchPeriod": 120,
+    //go项目配置
+    "[go]": {
+        "editor.defaultFormatter": "golang.go", //使用golang.go插件格式化go文件
+    },
+    "go.lintTool": "golangci-lint",
+    "go.lintOnSave": "file", //保存时自动检查文件代码风格
+    "go.toolsManagement.autoUpdate": true, //vscode定期自动更新go工具为最新版本,如gopls,golangci-lint等
+    // python配置
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true
+    },
+    "black-formatter.showNotifications": "always", //错误时显示提示
+    "terminal.integrated.inheritEnv": false, //终端不继承环境变量，避免conda环境变量干扰
+    //cspell插件：单词检查忽略选
+    "cSpell.language": "en", //设置英文单词检查
+    "cSpell.userWords": [
+        "arange",
+        "clangd",
+        "duckdb",
+        "easymotion",
+        "leveldb",
+        "numel",
+        "tabnine"
+    ],
+    // vim 配置
+    "editor.lineNumbers": "relative", //相对行号，方便vim操作
+    "multiCommand.commands": [
+        {
+            "command": "multiCommand.multiEscape",
+            "sequence": [
+                // 聚焦到第一组编辑器上
+                "workbench.action.focusFirstEditorGroup",
+                // 同时触发 vim 的 esc 效果，避免一些bug 发生
+                "extension.vim_escape",
+                // 可选：关闭搜索栏图标
+                "closeFindWidget",
+                // 可选：关闭智能提示栏，有些时候会用到。
+                "hideSuggestWidget",
+                // 可选：关闭编辑器的提示，有时候 vscode 会报错，然后右下角弹窗口出来
+                //      设定这个以后就可以用这个指令关闭了。
+                "notifications.clearAll"
+            ]
+        }
+    ],
+    //保留一些vscode与vim冲突的快捷键
+    "vim.handleKeys": {
+        "<C-a>": false, //全选
+        "<C-f>": false, //当前文件内搜索,全局搜索：ctrl+shift+f
+        "<C-h>": false, //替换
+        "<C-s>": false, //文本保存
+        "<C-n>": false, //新建文件
+        "<C-c>": false, //复制
+        "<C-v>": false, //粘贴
+        "<C-z>": false, //撤回
+        "<C-p>": false //打开文件(xxx),搜索项目对象(#xxx)，跳转到某一行(:xxx)
+    },
+    "vim.leader": " ", //设置leader键为空格
+    //设置easymotion插件，快速移动光标
+    "vim.easymotion": true, //启动easy motion
+    "vim.easymotionKeys": "hklyuiopnm,qwertzxcvbasdgjf;", //设置搜索时可以用来替换的字符
+    "vim.easymotionJumpToAnywhereRegex": "\\b[A-Za-z0-9]|[A-Za-z0-9]\\b|_.|#.|[a-z][A-Z]", //设置可以跳转的正则字符
+    // To improve performance",将vim插件加载的优先级调到最高
+    "extensions.experimental.affinity": {
+        "vscodevim.vim": 1
+    },
+    "vim.scroll": 10, //配置ctrl+u和vctrl+d的滚动距离,设为0则采用vscode默认距离
+    "vim.shell": "/bin/zsh", //设置 :shell(简写:sh) 打开终端为zsh，实际打开的是vscode自带的终端.
+    "vim.showcmd": true, //下方显示指令（默认为true)
+    "vim.surround": true, //开启surround插件，快速修改单词的括号、引号等。
+    "vim.useSystemClipboard": true, //将vim的粘贴板与系统粘贴版对齐。
+    "vim.vimrc.enable": false, //关闭vimrc的配置，只能通过vscode json配置
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [
+                "j",
+                "j"
+            ], //设置insert模式下，连点两下j退出insert模式
+            "after": [
+                "Esc"
+            ]
+        },
+        {
+            "before": [
+                "J",
+                "J"
+            ], //设置insert模式下，连点两下J退出insert模式
+            "after": [
+                "Esc"
+            ]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        //大写的HJKL都设置为增强版的hjkl,方便多行复制
+        {
+            "before": [
+                "H"
+            ],
+            "after": [
+                "5",
+                "h",
+            ]
+        },
+        {
+            "before": [
+                "J"
+            ],
+            "after": [
+                "5",
+                "j",
+            ]
+        },
+        {
+            "before": [
+                "K"
+            ],
+            "after": [
+                "5",
+                "k",
+            ]
+        },
+        {
+            "before": [
+                "L"
+            ],
+            "after": [
+                "5",
+                "l",
+            ]
+        },
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        //大写的HJKL都设置为增强版的hjkl
+        {
+            "before": [
+                "H"
+            ],
+            "after": [
+                "5",
+                "h",
+            ]
+        },
+        {
+            "before": [
+                "J"
+            ],
+            "after": [
+                "5",
+                "j",
+            ]
+        },
+        {
+            "before": [
+                "K"
+            ],
+            "after": [
+                "5",
+                "k",
+            ]
+        },
+        {
+            "before": [
+                "L"
+            ],
+            "after": [
+                "5",
+                "l",
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "q"
+            ], //自定义关闭当前窗口快捷键
+            "commands": [
+                ":q!"
+            ]
+        },
+        //easy motion插件的定位操作配置。f:输入两个字母 s:输入一个字母
+        {
+            // toggle easy motion, but two word
+            "before": [
+                "f"
+            ],
+            "after": [
+                "leader",
+                "leader",
+                "2",
+                "s"
+            ]
+        },
+        {
+            // toggle easy motion
+            "before": [
+                "s"
+            ],
+            "after": [
+                "leader",
+                "leader",
+                "s"
+            ]
+        },
+        //通过自定义快捷键替换常用鼠标操作
+        //1.设置光标forward和back的快捷键
+        {
+            "before": [
+                "<leader>",
+                "f"
+            ],
+            "commands": [
+                "workbench.action.navigateForward"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "b"
+            ],
+            "commands": [
+                "workbench.action.navigateBack"
+            ]
+        },
+        //2.鼠标悬停信息提示
+        {
+            // get info，相当与鼠标放在改函数上时vscode的提示
+            "before": [
+                "leader",
+                "i"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
+        },
+        //gd:goto defination vim已经自带了
+        {
+            // goto implementation
+            "before": [
+                "g",
+                "i"
+            ],
+            "commands": [
+                "editor.action.peekImplementation"
+            ]
+        },
+        {
+            // goto error
+            "before": [
+                "g",
+                "e"
+            ],
+            "commands": [
+                "editor.action.marker.nextInFiles"
+            ]
+        },
+        {
+            // zoom the window
+            "before": [
+                "<C-w>",
+                "z"
+            ],
+            "commands": [
+                ":only"
+            ]
+        },
+        {
+            "before": [
+                "<C-w>",
+                " "
+            ],
+            "after": [],
+            "commands": [
+                {
+                    "command": "workbench.action.evenEditorWidths"
+                }
+            ]
+        }
+    ],
+    //tabnine插件配置
+    "tabnine.receiveBetaChannelUpdates": true, //自动更新最新版本的tabnine
+    "tabnine.experimentalAutoImports": true, //自动导入头文件和包
+    //copilot插件配置
+    "github.copilot.chat.localeOverride": "zh-CN", //设置copilot的语言为中文
+    "remote.extensionKind": {
+        "GitHub.copilot": [
+            "ui"
+        ],
+        "github.copilot-chat": [
+            "ui"
+        ]
+    },
+    // 力扣插件配置
+    "leetcode.endpoint": "leetcode-cn", //选择力扣国内站点
+    "leetcode.hint.configWebviewMarkdown": false,
+    "leetcode.workspaceFolder": "/home/yin/.leetcode",
+    "leetcode.hint.commentDescription": false,
+    "leetcode.defaultLanguage": "cpp",
+}
