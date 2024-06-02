@@ -67,14 +67,6 @@
         "when": "editorTextFocus && vim.active && vim.use<C-g> && !inDebugRepl"
     },
     {
-        "key": "ctrl+g q",
-        "command": "workbench.action.openQuickChat.copilot"
-    },
-    {
-        "key": "ctrl+g o",
-        "command": "workbench.action.openChat.copilot"
-    },
-    {
         "key": "ctrl+g e",
         "command": "github.copilot.interactiveEditor.explain"
     },
@@ -101,11 +93,11 @@
         "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly && !suggestWidgetVisible"
     },
     {
-        "key": "ctrl+alt+q",
+        "key": "ctrl+m q",
         "command": "bookmarks.toggleLabeled"
     },
     {
-        "key": "ctrl+alt+f",
+        "key": "ctrl+m l",
         "command": "bookmarks.listFromAllFiles"
     },
     {
@@ -188,5 +180,54 @@
     {
         "key": "ctrl+alt+c",
         "command": "workbench.output.action.clearOutput"
+    },
+    {
+        "key": "ctrl+m",
+        "command": "-editor.action.toggleTabFocusMode"
+    },
+    {
+        "key": "ctrl+m",
+        "command": "-extension.vim_ctrl+m",
+        "when": "editorTextFocus && vim.active && vim.use<C-m> && !inDebugRepl || vim.active && vim.use<C-m> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-m> && !inDebugRepl && vim.mode == 'SearchInProgressMode'"
+    },
+    {
+        "key": "ctrl+m t",
+        "command": "bookmarks.toggle",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+alt+k",
+        "command": "-bookmarks.toggle",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+m",
+        "command": "workbench.view.extension.bookmarks"
+    },
+    {
+        "key": "ctrl+m p",
+        "command": "bookmarks.jumpToPrevious"
+    },
+    {
+        "key": "ctrl+m n",
+        "command": "bookmarks.jumpToNext"
+    },
+    {
+        "key": "ctrl+m right",
+        "command": "bookmarks.jumpToNext"
+    },
+    {
+        "key": "ctrl+m left",
+        "command": "bookmarks.jumpToPrevious"
+    },
+    {
+        "key": "ctrl+oem_7",
+        "command": "editor.action.blockComment",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "shift+alt+a",
+        "command": "-editor.action.blockComment",
+        "when": "editorTextFocus && !editorReadonly"
     }
 ]

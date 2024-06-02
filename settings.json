@@ -4,6 +4,8 @@
     "editor.formatOnPaste": true, //格式化粘贴的代码
     "editor.formatOnType": true, //按下回车键时自动格式化行代码
     "editor.fontFamily": "Fira Code", //选择微软字体,更顺滑
+    "editor.fontSize": 10,
+    "editor.hover.enabled": false, //关闭悬停提示s
     // "editor.fontLigatures": true, // != => === 等符号更美观？用一段时间才知道
     "editor.detectIndentation": false, //关闭自动检测缩进，始终使用用户定义的缩进设置
     "editor.renderWhitespace": "all", //显示空格和tab，帮助统一排版
@@ -17,12 +19,13 @@
     "files.eol": "\n", //采用linux换行符
     "terminal.integrated.enableMultiLinePasteWarning": "never", //关闭集成终端粘贴多行命令的警告
     "terminal.integrated.defaultProfile.linux": "tmux", //设置集成终端默认为tmux
+    "terminal.integrated.fontSize": 20,
     "workbench.editor.showTabs": "multiple", //显示上方的标签，只是用来方便查看和跳转。不要用鼠标去关闭!
     "workbench.colorTheme": "One Dark Pro Darker", //最好看的代码主题!
     "workbench.iconTheme": "material-icon-theme", //清晰好看的图标主题
     "explorer.confirmDelete": false, //删除文件时不再出现警告提示
     "security.workspace.trust.untrustedFiles": "open", //允许打开不受信任的文件(打开文件不再询问)
-    // "problems.showCurrentInStatus": true, //在状态栏显示当前文件的问题数
+    "problems.showCurrentInStatus": true, //在状态栏显示当前文件的问题数
     //C++项目配置
     "[cpp]": {
         "editor.wordBasedSuggestions": "off",
@@ -32,37 +35,37 @@
     },
     "C_Cpp.formatting": "clangFormat", //采用clang-format格式化cpp文件
     "C_Cpp.clang_format_style": "Google", //选择clang-format为Google风格
-    "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true, //clang-tidy使用build路径来查找compile_commands.json文件
-    // "C_Cpp.default.cppStandard": "c++17", //设置为C++17标准,不然clangd无法对C++17特性的提示
+    // "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true, //clang-tidy使用build路径来查找compile_commands.json文件
+    // "C_Cpp.default.cppStandard": "c++20", //设置为C++20标准,不然clangd无法对C++20特性的提示
     // "C_Cpp.default.compilerPath": "/usr/bin/clang++", //设置clang++为默认编译器
     "C_Cpp.intelliSenseEngine": "disabled", //关闭c/c++插件的智能提示，使用clangd
     "C_Cpp.codeAnalysis.clangTidy.enabled": true, //开启clang-tidy检查
-    // "C_Cpp.codeAnalysis.clangTidy.path": "/usr/bin/clang-tidy",
+    // "C_Cpp.codeAnalysis.clangTidy.path": "/usr/bin/clang-tidy",//最好不要设置clang-tidy的路径，因为换系统的时候很麻烦，就用默认的就好。
     // CMakefile配置
-    "cmake.configureOnOpen": true, //打开项目时自动执行 cmake . -B build
-    "[cmake]": {
-        "editor.defaultFormatter": "cheshirekow.cmake-format" //设置cmake-format插件格式化cmake文件
-    },
+    // "cmake.configureOnOpen": true, //打开项目时自动执行 cmake . -B build
+    // "[cmake]": {
+    // "editor.defaultFormatter": "cheshirekow.cmake-format" //设置cmake-format插件格式化cmake文件
+    // },
     // clangd配置
     "clangd.arguments": [
-        // 在后台自动分析文件（基于complie_commands)
+        // 在后台自动分析文件（基于complie_commands)，不是自己点进去才生成，而是后台自动生成index文件
         "--background-index",
-        // 标记compelie_commands.json文件的目录位置
-        "--compile-commands-dir=${workspaceFolder}/build", -
-        // 同时开启的任务数量
-        "-j=8",
-        // 告诉clangd用那个clang进行编译，路径参考which clang++的路径
-        // "--query-driver=/usr/bin/clang++",
-        // clang-tidy功能
-        "--clang-tidy",
-        "--clang-tidy-checks=performance-*,bugprone-*",
-        // 全局补全（会自动补充头文件）
+        // 开启clang-tidy检查，这里关闭，因为使用clang-tidy插件，避免冲突
+        // "--clang-tidy",
+        // "--clang-tidy-checks=performance-*,bugprone-*",
+        // 多个文件同时索引的线程数量，可以更快得生成索引文件，<=cpu核数
+        "-j=4",
+        // 告诉clangd用那个clang进行编译，路径参考which clang++的路径（必须正确配置）
+        "--query-driver=/usr/bin/clang++,/usr/bin/clang",
+        // 使用自动补全功能时，clangd会插入函数的参数名，这样你就可以直接看到每个参数的名称和位置，而不需要查看函数的定义。
+        "--function-arg-placeholders",
+        // 全局补全更全面（会自动补充头文件）
         "--all-scopes-completion",
-        // 更详细的补全内容
-        "--completion-style=detailed",
-        // 补充头文件的形式
+        // 更详细的补全内容，detailed: 详细的补全内容，bundled: 更少的补全内容，minimal: 精简的补全内容
+        "--completion-style=bundled",
+        // 补充头文件的形式,只要代码用到就补充，缺点：可能会在其他文件中已经引用但重复引用的情况
         "--header-insertion=iwyu",
-        // pch优化的位置
+        // pch优化的位置，预编译头文件存储在磁盘，而不是内存，在大型项目中比较有用，但是磁盘会更慢
         "--pch-storage=disk",
     ],
     //git配置
@@ -83,9 +86,7 @@
         "editor.formatOnSave": true
     },
     "black-formatter.showNotifications": "always", //错误时显示提示
-    "terminal.integrated.inheritEnv": false, //终端不继承环境变量，避免conda环境变量干扰
-    //cspell插件：单词检查忽略选
-    "cSpell.language": "en", //设置英文单词检查
+    "terminal.integrated.inheritEnv": false, //设置英文单词检查
     "cSpell.userWords": [
         "arange",
         "clangd",
@@ -348,18 +349,23 @@
         }
     ],
     //tabnine插件配置
-    "tabnine.receiveBetaChannelUpdates": true, //自动更新最新版本的tabnine
-    "tabnine.experimentalAutoImports": true, //自动导入头文件和包
+    // "tabnine.receiveBetaChannelUpdates": true, //自动更新最新版本的tabnine
+    // "tabnine.experimentalAutoImports": true,
+    "remote.SSH.remotePlatform": {
+        "10.129.132.227": "linux"
+    },
     //copilot插件配置
-    // "github.copilot.chat.localeOverride": "zh-CN", //设置copilot的语言为中文
-    // "remote.extensionKind": {
-    // "GitHub.copilot": [
-    // "ui"
-    // ],
-    // "github.copilot-chat": [
-    // "ui"
-    // ]
-    // },
+    "github.copilot.chat.localeOverride": "zh-CN", //设置copilot的语言为中文
+    "remote.extensionKind": {
+        "GitHub.copilot": [
+            "ui"
+        ],
+        "github.copilot-chat": [
+            "ui"
+        ]
+    },
+    "github.copilot.editor.enableAutoCompletions": true,
+    "tabnine.experimentalAutoImports": true,
     // 力扣插件配置
     // "leetcode.endpoint": "leetcode-cn", //选择力扣国内站点
     // "leetcode.hint.configWebviewMarkdown": false,
